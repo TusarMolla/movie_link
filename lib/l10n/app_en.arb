@@ -1,8 +1,21 @@
 {
   "app_name": "Movie Link",
+
+
+  "favorite_page_title": "Favorite",
+
+  "home_page_title": "Home",
+
+
+
+
   "splash_screen_text1": "Get Latest Movies Any Where Any Time",
   "splash_screen_click": "Click",
   "splash_screen_watch": "Watch",
   "splash_screen_enjoy": "Enjoy",
-  "splash_screen_start": "Get Started"
+  "splash_screen_start": "Get Started",
+
+  "tranding_page_title": "Tranding",
+
+  "tv_page_title": "TV"
 }
