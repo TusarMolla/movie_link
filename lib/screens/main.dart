@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: "Home",
-              backgroundColor: Colors.green.withOpacity(0.2),
+              backgroundColor: Colors.black.withOpacity(0.5),
                 ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.whatshot_outlined),
