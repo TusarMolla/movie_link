@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/device_info.dart';
 import 'package:movie_link/custom/lang.dart';
@@ -26,3 +27,4 @@ class _FavoriteState extends State<Favorite> {
 
 
 }
+*/

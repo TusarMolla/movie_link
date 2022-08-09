@@ -4,7 +4,7 @@ import 'package:movie_link/custom/device_info.dart';
 import 'package:movie_link/custom/lang.dart';
 import 'package:movie_link/presenter/main_presenter.dart';
 import 'package:movie_link/screens/main.dart';
-import 'package:provider/provider.dart';
+
 import 'package:route_transitions/route_transitions.dart';
 
 
@@ -23,10 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(Duration(seconds: 2)).then((value){
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>ChangeNotifierProvider(
-        create: (context)=>MainPresenter(),
-        child: MainPage(),
-      )), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>
+         MainPage(),
+      ), (route) => false);
     });
     // TODO: implement initState
     super.initState();

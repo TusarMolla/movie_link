@@ -1,7 +1,8 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/device_info.dart';
 import 'package:movie_link/custom/lang.dart';
-import 'package:movie_link/dummy_data/dummy_data.dart';
+
 import 'package:movie_link/ui_elements/grid_movie_item.dart';
 
 
@@ -59,3 +60,4 @@ class _TrandingState extends State<Tranding> {
     ),
   );
 }
+*/
