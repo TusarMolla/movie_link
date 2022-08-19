@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_link/custom/common_ui.dart';
 
 class CategoryItem extends StatelessWidget {
   final String text,imageLink;
@@ -8,6 +9,8 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(bottom: 4),
+      decoration: CommonUi.shdowDecoration(spreadRadius: 0),
       height: 80,
       width: 80,
       child: Stack(
