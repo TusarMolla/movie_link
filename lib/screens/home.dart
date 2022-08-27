@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
               Container(
                 alignment: Alignment.center,
                 child: GridView.count(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.only(right: 16,left: 16,bottom: 60),
                   physics: NeverScrollableScrollPhysics(),
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
