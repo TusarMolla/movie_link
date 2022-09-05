@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/common_ui.dart';
+import 'package:movie_link/my_theme.dart';
 
 class CategoryItem extends StatelessWidget {
   final String text,imageLink;
@@ -29,7 +30,7 @@ class CategoryItem extends StatelessWidget {
               width: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.black45,
+                color: MyTheme.accent_soft_color,
               ),
               child: Text(text??"",style: TextStyle(fontSize: 15,color: Colors.white,),textAlign:TextAlign.center ,))
         ],

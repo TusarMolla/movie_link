@@ -190,7 +190,7 @@ class _HomeState extends State<Home> {
                             width: DeviceInfo(context).width / 1.4,
                           ),
                           Positioned(
-                            bottom: -1,
+                            bottom: 0,
                             child: Container(
                               height: 120,
                               width: DeviceInfo(context).width,
