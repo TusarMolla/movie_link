@@ -20,7 +20,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  HomePresenter homePresenter = HomePresenter(HomePageData());
+  HomePresenter homePresenter = HomePresenter();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildTopMovieContainer() => StreamBuilder<MoviesResponse>(
-      stream: homePresenter.state.getTopMovies().asStream(),
+      stream: homePresenter.allMovie,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return Container(
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
       });
 
   Widget buildCategoryContainer() => StreamBuilder<CategoriesResponse>(
-      stream: homePresenter.state.getCategories().asStream(),
+      stream: homePresenter.allCategory,
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Container();
@@ -159,7 +159,7 @@ class _HomeState extends State<Home> {
 
   Widget buildImageSliderContainer(BuildContext context) {
     return StreamBuilder<SlidersResponse>(
-        stream: homePresenter.state.getSliders().asStream(),
+        stream: homePresenter.allSlide,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Container(

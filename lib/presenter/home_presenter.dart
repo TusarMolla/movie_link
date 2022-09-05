@@ -1,48 +1,41 @@
-
-
-
-import 'package:bloc/bloc.dart';
 import 'package:movie_link/models/category.dart';
 import 'package:movie_link/models/movie.dart';
 import 'package:movie_link/models/sliders.dart';
 import 'package:movie_link/repositories/categories_repository.dart';
 import 'package:movie_link/repositories/movies_repository.dart';
 import 'package:movie_link/repositories/sliders_repository.dart';
+import 'package:rxdart/rxdart.dart';
 
-class HomePresenter extends Bloc<Home,HomePageData>{
-  HomePresenter(initialState) : super(initialState) {
-    on<HomePageData>((event, emit) => emit(state));
-  }
-}
+class HomePresenter{
+  final _moviesFetcher = PublishSubject<MoviesResponse>();
+  final _slideFetcher = PublishSubject<SlidersResponse>();
+  final _categoryFetcher = PublishSubject<CategoriesResponse>();
 
-abstract class Home{
-  Future<MoviesResponse>  getTopMovies();
-  Future<CategoriesResponse>  getCategories();
-  Future<SlidersResponse>  getSliders();
-}
 
-class HomePageData extends Home{
-  @override
-  Future<CategoriesResponse> getCategories() async{
-    return await CategoriesRepository.categoryList();
-    // TODO: implement getCategories
-    throw UnimplementedError();
+  HomePresenter(){
+    fetchAllCategory();
+    fetchAllMovie();
+    fetchAllSlide();
   }
 
-  @override
-  Future<SlidersResponse> getSliders() async{
-    return await SlidersRepository.sliderList(page: 1);
+  ValueStream <MoviesResponse> get allMovie=>_moviesFetcher.stream;
+  ValueStream <SlidersResponse> get allSlide=>_slideFetcher.stream;
+  ValueStream <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
 
-    // TODO: implement getSliders
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<MoviesResponse> getTopMovies() async{
+  fetchAllMovie()async{
     var value = await MoviesRepository.movieList(page: 1);
-    return value;
-    // TODO: implement getTopMovies
-    throw UnimplementedError();
+    _moviesFetcher.sink.add(value);
+  }
+  fetchAllCategory()async{
+    var value = await CategoriesRepository.categoryList();
+    _categoryFetcher.sink.add(value);
+  }
+  fetchAllSlide()async{
+    var value = await SlidersRepository.sliderList(page: 1);
+    _slideFetcher.sink.add(value);
   }
 
+
+
 }
+
