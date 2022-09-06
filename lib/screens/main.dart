@@ -12,12 +12,12 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  MainPresenter mainPresenter= MainPresenter();
+class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin{
+  MainPresenter mainPresenter;
 
   @override
   void initState() {
-
+    mainPresenter= MainPresenter(this);
     // TODO: implement initState
    //mainPresenter= Provider.of<MainPresenter>(context, listen: false);
     super.initState();
@@ -25,57 +25,52 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: StreamBuilder<int>(
-        stream: mainPresenter.getIndex,
-        builder: (context, snapshot) {
-          return Container(
-            child: buildBody(snapshot.data),
-          );
-        }
-      ),
-      bottomNavigationBar: buildBottomNavigationBar(),
+    return StreamBuilder<int>(
+      initialData: 0,
+      stream: mainPresenter.getIndex,
+      builder: (context, snapshot) {
+        return Scaffold(
+          extendBody: true,
+          body: buildBody(snapshot.data),
+          bottomNavigationBar: buildBottomNavigationBar(snapshot),
+        );
+      }
     );
   }
 
-  Widget buildBottomNavigationBar() {
-     return StreamBuilder<int>(
-       initialData: 0,
-       stream: mainPresenter.getIndex,
-       builder: (context, snapshot) {
-         return BottomNavigationBar(
-          onTap: (index) {
-            mainPresenter.add(index);
-          },
-          currentIndex: snapshot.data,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-              backgroundColor: Colors.black.withOpacity(0.5),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.whatshot_outlined),
-              label: "Tranding",
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.live_tv_rounded), label: "TV"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), label: "Favorite"),
-          ],
-    );
-       }
+  Widget buildBottomNavigationBar(snapshot) {
+     return  BottomNavigationBar(
+       onTap: (index) {
+         mainPresenter.add(index);
+       },
+       currentIndex: snapshot.data,
+       items: [
+         BottomNavigationBarItem(
+           icon: Icon(Icons.home),
+           label: "Home",
+           backgroundColor: Colors.black.withOpacity(0.5),
+         ),
+         BottomNavigationBarItem(
+           icon: Icon(Icons.whatshot_outlined),
+           label: "Tranding",
+         ),
+         BottomNavigationBarItem(
+             icon: Icon(Icons.live_tv_rounded), label: "TV"),
+         BottomNavigationBarItem(
+             icon: Icon(Icons.favorite), label: "Favorite"),
+       ],
      );
   }
 
   Widget buildBody(intdex) {
+
       switch (intdex) {
         case 0:
-          return Home();
+          return Home(presenter:mainPresenter);
+        // return Text("kk");
           break;
         case 1:
-          return Tranding();
+          return Text("data");
           break;
         case 2:
           return TV();
@@ -84,7 +79,7 @@ class _MainPageState extends State<MainPage> {
           return Favorite();
           break;
         default:
-          return Home();
+          return Home(presenter: mainPresenter);
       }
 
   }
