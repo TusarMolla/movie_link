@@ -1,9 +1,7 @@
 
-/*
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/device_info.dart';
 import 'package:movie_link/custom/lang.dart';
-import 'package:movie_link/dummy_data/dummy_data.dart';
 import 'package:movie_link/ui_elements/grid_movie_item.dart';
 
 
@@ -36,7 +34,7 @@ class _TVState extends State<TV> {
     return Container(
       child: Column(
         children: [
-          buildTVShows(),
+          Text("tvshow")
         ],
       ),
     );
@@ -55,9 +53,8 @@ class _TVState extends State<TV> {
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         crossAxisCount: 2,
-        children: List.generate(DummyData.imageList.length, (index) => MovieGridItem(title:DummyData.imageList[index].title ,imageLink:DummyData.imageList[index].imageLink ,ratting:DummyData.imageList[index].ratting ,category:DummyData.imageList[index].category ,)),
+       // children: List.generate(DummyData.imageList.length, (index) => MovieGridItem(title:DummyData.imageList[index].title ,imageLink:DummyData.imageList[index].imageLink ,ratting:DummyData.imageList[index].ratting ,category:DummyData.imageList[index].category ,)),
       ),
     ),
   );
 }
-*/

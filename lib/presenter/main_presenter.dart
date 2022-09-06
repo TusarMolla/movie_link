@@ -1,15 +1,22 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:rxdart/rxdart.dart';
 
-class MainPresenter extends Bloc{
-  int currentIndex = 0;
+class MainPresenter {
 
-  MainPresenter(initialState) : super(0);
+final _currentIndex = PublishSubject<int>();
+PublishSubject<int> get getIndex =>_currentIndex.stream;
 
-  changeCurrentIndex(index) {
-    emit(index);
-      //currentIndex = index;
-  }
+add(index){
+  _currentIndex.sink.add(index);
+}
+
+MainPresenter(){
+  _currentIndex.sink.add(0);
+}
+
+
+
+
 
 }
 

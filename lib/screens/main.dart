@@ -13,10 +13,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  MainPresenter mainPresenter= MainPresenter(0);
+  MainPresenter mainPresenter= MainPresenter();
 
   @override
   void initState() {
+
     // TODO: implement initState
    //mainPresenter= Provider.of<MainPresenter>(context, listen: false);
     super.initState();
@@ -26,50 +27,61 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: Container(
-        child: buildBody(),
+      body: StreamBuilder<int>(
+        stream: mainPresenter.getIndex,
+        builder: (context, snapshot) {
+          return Container(
+            child: buildBody(snapshot.data),
+          );
+        }
       ),
       bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
 
   Widget buildBottomNavigationBar() {
-     return BottomNavigationBar(
-      onTap: (index) {
-        mainPresenter.changeCurrentIndex(index);
-      },
-      currentIndex: mainPresenter.state,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "Home",
-          backgroundColor: Colors.black.withOpacity(0.5),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.whatshot_outlined),
-          label: "Tranding",
-        ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.live_tv_rounded), label: "TV"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.favorite), label: "Favorite"),
-      ],
+     return StreamBuilder<int>(
+       initialData: 0,
+       stream: mainPresenter.getIndex,
+       builder: (context, snapshot) {
+         return BottomNavigationBar(
+          onTap: (index) {
+            mainPresenter.add(index);
+          },
+          currentIndex: snapshot.data,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+              backgroundColor: Colors.black.withOpacity(0.5),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.whatshot_outlined),
+              label: "Tranding",
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.live_tv_rounded), label: "TV"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.favorite), label: "Favorite"),
+          ],
     );
+       }
+     );
   }
 
-  Widget buildBody() {
-      switch (mainPresenter.state) {
+  Widget buildBody(intdex) {
+      switch (intdex) {
         case 0:
           return Home();
           break;
         case 1:
-          //return Tranding();
+          return Tranding();
           break;
         case 2:
-         // return TV();
+          return TV();
           break;
         case 3:
-          //return Favorite();
+          return Favorite();
           break;
         default:
           return Home();

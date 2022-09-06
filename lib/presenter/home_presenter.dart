@@ -18,9 +18,9 @@ class HomePresenter{
     fetchAllSlide();
   }
 
-  ValueStream <MoviesResponse> get allMovie=>_moviesFetcher.stream;
-  ValueStream <SlidersResponse> get allSlide=>_slideFetcher.stream;
-  ValueStream <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
+  PublishSubject <MoviesResponse> get allMovie=>_moviesFetcher.stream;
+  PublishSubject <SlidersResponse> get allSlide=>_slideFetcher.stream;
+  PublishSubject <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
 
   fetchAllMovie()async{
     var value = await MoviesRepository.movieList(page: 1);

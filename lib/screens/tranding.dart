@@ -1,4 +1,4 @@
-/*
+
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/device_info.dart';
 import 'package:movie_link/custom/lang.dart';
@@ -55,9 +55,8 @@ class _TrandingState extends State<Tranding> {
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         crossAxisCount: 2,
-        children: List.generate(DummyData.imageList.length, (index) => MovieGridItem(title:DummyData.imageList[index].title ,imageLink:DummyData.imageList[index].imageLink ,ratting:DummyData.imageList[index].ratting ,category:DummyData.imageList[index].category ,)),
+        //children: List.generate(DummyData.imageList.length, (index) => MovieGridItem(title:DummyData.imageList[index].title ,imageLink:DummyData.imageList[index].imageLink ,ratting:DummyData.imageList[index].ratting ,category:DummyData.imageList[index].category ,)),
       ),
     ),
   );
 }
-*/
