@@ -34,6 +34,7 @@ class MoviesResponse {
 
 class Datum {
   Datum({
+    this.id,
     this.name,
     this.category,
     this.image,
@@ -45,6 +46,7 @@ class Datum {
     this.tranding,
   });
 
+  var id;
   String name;
   String category;
   String image;
@@ -56,6 +58,7 @@ class Datum {
   String tranding;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    id: json["id"],
     name: json["name"],
     category: json["category"],
     image: json["image"],
@@ -68,6 +71,7 @@ class Datum {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "name": name,
     "category": category,
     "image": image,
