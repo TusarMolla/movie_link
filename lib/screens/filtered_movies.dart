@@ -10,19 +10,29 @@ import 'package:movie_link/ui_elements/grid_movie_item.dart';
 
 
 
-class Tranding extends StatefulWidget {
+class FilteredMovies extends StatefulWidget {
   MainPresenter presenter;
-   Tranding({Key key,this.presenter}) : super(key: key);
+  String title;
+  FilteredMovies({Key key,this.presenter,this.title}) : super(key: key);
 
   @override
-  _TrandingState createState() => _TrandingState();
+  _FilteredMovies createState() => _FilteredMovies();
 }
 
-class _TrandingState extends State<Tranding> {
+class _FilteredMovies extends State<FilteredMovies> {
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    print("close");
+    // widget.presenter.getFilteredMovies.;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(LangText(context).getLang().tranding_page_title),),
+      appBar: AppBar(title: Text(widget.title),),
       body:  RefreshIndicator(
         onRefresh: (){
           return Future.delayed(Duration(seconds: 2));
@@ -48,7 +58,7 @@ class _TrandingState extends State<Tranding> {
 
 
   Widget buildTrandingMovies() => StreamBuilder<MoviesResponse>(
-      stream: widget.presenter.trandingMovies,
+      stream: widget.presenter.getFilteredMovies,
       builder: (context, snapshot) {
         return Container(
           margin: EdgeInsets.only(top: 16),

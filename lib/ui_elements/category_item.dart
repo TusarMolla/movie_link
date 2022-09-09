@@ -2,10 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/common_ui.dart';
 import 'package:movie_link/my_theme.dart';
+import 'package:movie_link/presenter/main_presenter.dart';
+import 'package:movie_link/screens/filtered_movies.dart';
+import 'package:route_transitions/route_transitions.dart';
 
 class CategoryItem extends StatelessWidget {
-  final String text,imageLink;
-  const CategoryItem({Key key, this.text, this.imageLink}) : super(key: key);
+  final String text,imageLink,id;
+  MainPresenter presenter;
+   CategoryItem({Key key, this.text, this.imageLink,this.presenter,this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +18,34 @@ class CategoryItem extends StatelessWidget {
       decoration: CommonUi.shdowDecoration(spreadRadius: 0),
       height: 80,
       width: 80,
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: FadeInImage(placeholder: AssetImage("assets/test.jpg"), image: NetworkImage(imageLink),
-              height: 80,
-              width: 80,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: MyTheme.accent_soft_color,
+      child: InkWell(
+        onTap: (){
+          presenter.fetchFilters(id);
+          Navigator.push(context, PageRouteTransition(builder: (context)=>FilteredMovies(presenter: presenter,title: text,),
+            animationType: AnimationType.slide_right
+          ));
+        },
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: FadeInImage(placeholder: AssetImage("assets/test.jpg"), image: NetworkImage(imageLink),
+                height: 80,
+                width: 80,
+                fit: BoxFit.cover,
               ),
-              child: Text(text??"",style: TextStyle(fontSize: 15,color: Colors.white,),textAlign:TextAlign.center ,))
-        ],
+            ),
+            Container(
+              alignment: Alignment.center,
+              height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: MyTheme.accent_soft_color,
+                ),
+                child: Text(text??"",style: TextStyle(fontSize: 15,color: Colors.white,),textAlign:TextAlign.center ,))
+          ],
+        ),
       ),
     );
   }

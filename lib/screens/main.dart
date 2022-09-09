@@ -70,13 +70,13 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
         // return Text("kk");
           break;
         case 1:
-          return Text("data");
+          return Tranding(presenter: mainPresenter,);
           break;
         case 2:
-          return TV();
+          return TV(presenter: mainPresenter,);
           break;
         case 3:
-          return Favorite();
+          //return Favorite();
           break;
         default:
           return Home(presenter: mainPresenter);

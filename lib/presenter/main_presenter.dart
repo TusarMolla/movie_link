@@ -12,6 +12,9 @@ class MainPresenter{
   // initial variable
   BehaviorSubject<int> _currentIndex = BehaviorSubject<int>.seeded(0);
   final _moviesFetcher = BehaviorSubject<MoviesResponse>();
+  final _trandingMoviesFetcher = BehaviorSubject<MoviesResponse>();
+  final _tvShowsFetcher = BehaviorSubject<MoviesResponse>();
+  final _filteredFetcher = BehaviorSubject<MoviesResponse>();
   final _slideFetcher = BehaviorSubject<SlidersResponse>();
   final _categoryFetcher = BehaviorSubject<CategoriesResponse>();
   final _movieDetailsFetcher = BehaviorSubject<MovieDetailsResponse>();
@@ -28,6 +31,8 @@ class MainPresenter{
     fetchAllCategory();
     fetchAllMovie();
     fetchAllSlide();
+    fetchTrandingMovie();
+    fetchTvShows();
   }
   
   Animation<double> animation; //animation variable for circle 1
@@ -46,6 +51,9 @@ class MainPresenter{
   // get data
   BehaviorSubject<int> get getIndex => _currentIndex.stream;
   BehaviorSubject <MoviesResponse> get allMovie=>_moviesFetcher.stream;
+  BehaviorSubject <MoviesResponse> get trandingMovies=>_trandingMoviesFetcher.stream;
+  BehaviorSubject <MoviesResponse> get tvShows=>_tvShowsFetcher.stream;
+  BehaviorSubject <MoviesResponse> get getFilteredMovies=>_filteredFetcher.stream;
   BehaviorSubject <SlidersResponse> get allSlide=>_slideFetcher.stream;
   BehaviorSubject <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
   BehaviorSubject<double> get getAnimationValue => _animationValue.stream;
@@ -54,6 +62,18 @@ class MainPresenter{
   fetchAllMovie()async{
     var value = await MoviesRepository.movieList(page: 1);
     _moviesFetcher.sink.add(value);
+  }
+  fetchTrandingMovie()async{
+    var value = await MoviesRepository.trandingMovieList(page: 1);
+    _trandingMoviesFetcher.sink.add(value);
+  }
+  fetchTvShows()async{
+    var value = await MoviesRepository.tvShowList(page: 1);
+    _tvShowsFetcher.sink.add(value);
+  }
+  fetchFilters(id)async{
+    var value = await MoviesRepository.filteredMovieList(id: id);
+    _filteredFetcher.sink.add(value);
   }
     fetchMovieDetails(id)async{
     var value = await MoviesRepository.movieDetails(id);

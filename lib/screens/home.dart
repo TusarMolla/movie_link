@@ -169,6 +169,8 @@ class Home extends StatelessWidget {
           return CategoryItem(
             text: snapshot.data.data[index].name,
             imageLink: snapshot.data.data[index].image,
+            presenter: presenter,
+            id: snapshot.data.data[index].id.toString(),
           );
         },
         separatorBuilder: (context, index) {

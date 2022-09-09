@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_link/custom/device_info.dart';
+import 'package:movie_link/custom/shimmer_helper.dart';
 import 'package:movie_link/models/movie_details.dart';
 import 'package:movie_link/my_theme.dart';
 import 'package:movie_link/presenter/main_presenter.dart';
@@ -22,6 +23,7 @@ class _MovieDetailsState extends State<MovieDetails> {
           stream: widget.mainPresenter.getMovieDetails,
           builder: (context, snapshot) {
             if(snapshot.hasData)
+            // if(false)
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,7 +114,64 @@ class _MovieDetailsState extends State<MovieDetails> {
               ],
             );
               else
-              return  CircularProgressIndicator(strokeWidth: 2,);
+              return  Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  ShimmerHelper.basicShimmer(
+                    height: 200.0,
+                    width: DeviceInfo(context).width,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                    child:
+                    ShimmerHelper.basicShimmer(
+                      height: 20.0,
+                      width: 290.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                    child:
+                    ShimmerHelper.basicShimmer(
+                      height: 20.0,
+                      width: 200.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                    child:
+                    ShimmerHelper.basicShimmer(
+                      height: 20.0,
+                      width: 250.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                    child:
+                    ShimmerHelper.basicShimmer(
+                      height: 20.0,
+                      width: 280.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                    child:
+                    ShimmerHelper.basicShimmer(
+                      height: 20.0,
+                      width: 210.0,
+                    ),                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                    child:
+                    ShimmerHelper.basicShimmer(
+                      height: 100.0,
+                      width: DeviceInfo(context).width-40,
+                    ),
+                  ),
+
+                ],
+              );
             ;
           }
         ),
