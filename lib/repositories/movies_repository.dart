@@ -29,6 +29,13 @@ class MoviesRepository{
     var res = await http.get(url,);
     return moviesResponseFromJson(res.body);
   }
+  static Future<MoviesResponse> favoriteMovieList({String id=""})async{
+    Uri url = Uri.parse("${AppConfig.API_URL}/filter/$id");
+    print(url.toString());
+    var res = await http.get(url,);
+    return moviesResponseFromJson(res.body);
+  }
+
 
   static Future<MovieDetailsResponse> movieDetails( id)async{
     Uri url = Uri.parse("${AppConfig.API_URL}/movie-details/$id");

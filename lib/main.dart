@@ -5,6 +5,7 @@ import 'package:movie_link/screens/splash_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp( MyApp());
 }
 

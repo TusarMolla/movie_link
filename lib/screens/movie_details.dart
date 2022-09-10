@@ -82,7 +82,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 18.0,right: 18),
+                  padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
                   child: Text(snapshot.data.data.name,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                 ),
                 Padding(
@@ -96,7 +96,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 18.0,right: 18),
-                  child: Text("Category: "+snapshot.data.data.category,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
+                  child: Text(snapshot.data.data.category,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 18.0,right: 18),
@@ -107,8 +107,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                   child: Text("Releases: "+snapshot.data.data.releaseDate,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 18.0,right: 18),
-                  child: Text("Details: "+snapshot.data.data.description,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
+                  padding: const EdgeInsets.only(left: 18.0,right: 18,top: 10),
+                  child: Text(snapshot.data.data.description,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
                 ),
 
               ],

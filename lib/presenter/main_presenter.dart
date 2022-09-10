@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:movie_link/models/category.dart';
+import 'package:movie_link/models/crate_database.dart';
+import 'package:movie_link/models/favorite_sqlite_model.dart';
 import 'package:movie_link/models/movie.dart';
 import 'package:movie_link/models/movie_details.dart';
 import 'package:movie_link/models/sliders.dart';
@@ -10,6 +12,8 @@ import 'package:rxdart/rxdart.dart';
 
 class MainPresenter{
   // initial variable
+  MyDatabase myDatabase;
+
   BehaviorSubject<int> _currentIndex = BehaviorSubject<int>.seeded(0);
   final _moviesFetcher = BehaviorSubject<MoviesResponse>();
   final _trandingMoviesFetcher = BehaviorSubject<MoviesResponse>();
@@ -20,8 +24,11 @@ class MainPresenter{
   final _movieDetailsFetcher = BehaviorSubject<MovieDetailsResponse>();
   final _animationValue = BehaviorSubject<double>.seeded(35);
 
+  final _favoriteMovie = BehaviorSubject<MoviesResponse>();
+
   MainPresenter(vnc){
     animationcontroller = AnimationController(vsync: vnc,duration: Duration(milliseconds: 1500));
+    myDatabase.create();
     animationcontroller.repeat();
     animation = Tween<double>(begin: 35, end: 50).animate(animationcontroller);
     animationcontroller.addListener(() {
@@ -58,6 +65,7 @@ class MainPresenter{
   BehaviorSubject <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
   BehaviorSubject<double> get getAnimationValue => _animationValue.stream;
   BehaviorSubject<MovieDetailsResponse> get getMovieDetails => _movieDetailsFetcher.stream;
+  BehaviorSubject<MoviesResponse> get getFavoriteMovie => _favoriteMovie.stream;
 
   fetchAllMovie()async{
     var value = await MoviesRepository.movieList(page: 1);
@@ -73,6 +81,18 @@ class MainPresenter{
   }
   fetchFilters(id)async{
     var value = await MoviesRepository.filteredMovieList(id: id);
+    _filteredFetcher.sink.add(value);
+  }
+  fetchFavoriteMovies()async{
+    var ids =await myDatabase.favorites();
+    List arrayId;
+    ids.forEach((element) {
+      arrayId.add(element.id);
+    });
+
+    var value = await MoviesRepository.filteredMovieList(id: id);
+
+
     _filteredFetcher.sink.add(value);
   }
     fetchMovieDetails(id)async{

@@ -31,7 +31,7 @@ class _TVState extends State<TV> {
 
 
   Widget buildTrandingMovies() => StreamBuilder<MoviesResponse>(
-      stream: widget.presenter.trandingMovies,
+      stream: widget.presenter.tvShows,
       builder: (context, snapshot) {
          if(snapshot.hasData)
           return Container(
