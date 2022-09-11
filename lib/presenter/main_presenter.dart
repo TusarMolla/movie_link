@@ -24,6 +24,7 @@ class MainPresenter{
   final _movieDetailsFetcher = BehaviorSubject<MovieDetailsResponse>();
   final _animationValue = BehaviorSubject<double>.seeded(35);
 
+  final _isFavorite = BehaviorSubject<bool>.seeded(false);
   final _favoriteMovie = BehaviorSubject<MoviesResponse>();
 
   MainPresenter(vnc){
@@ -40,6 +41,7 @@ class MainPresenter{
     fetchAllSlide();
     fetchTrandingMovie();
     fetchTvShows();
+    fetchFavoriteMovies();
   }
   
   Animation<double> animation; //animation variable for circle 1
@@ -66,35 +68,43 @@ class MainPresenter{
   BehaviorSubject<double> get getAnimationValue => _animationValue.stream;
   BehaviorSubject<MovieDetailsResponse> get getMovieDetails => _movieDetailsFetcher.stream;
   BehaviorSubject<MoviesResponse> get getFavoriteMovie => _favoriteMovie.stream;
+  BehaviorSubject<bool> get getIsFavorite => _isFavorite.stream;
 
   fetchAllMovie()async{
     var value = await MoviesRepository.movieList(page: 1);
     _moviesFetcher.sink.add(value);
   }
+
   fetchTrandingMovie()async{
     var value = await MoviesRepository.trandingMovieList(page: 1);
     _trandingMoviesFetcher.sink.add(value);
   }
+
   fetchTvShows()async{
     var value = await MoviesRepository.tvShowList(page: 1);
     _tvShowsFetcher.sink.add(value);
   }
+
   fetchFilters(id)async{
     var value = await MoviesRepository.filteredMovieList(id: id);
     _filteredFetcher.sink.add(value);
   }
+
   fetchFavoriteMovies()async{
-    var ids =await myDatabase.favorites();
+    var ids = await myDatabase.favorites();
     List arrayId;
     ids.forEach((element) {
       arrayId.add(element.id);
     });
 
-    var value = await MoviesRepository.filteredMovieList(id: id);
-
-
-    _filteredFetcher.sink.add(value);
+    var value = await MoviesRepository.favoriteMovieList(ids: arrayId);
+    _favoriteMovie.sink.add(value);
   }
+    checkIsFavorite(id)async{
+    var isFavorite = await myDatabase.checkFavorite(id);
+    _isFavorite.sink.add(isFavorite);
+  }
+
     fetchMovieDetails(id)async{
     var value = await MoviesRepository.movieDetails(id);
     _movieDetailsFetcher.sink.add(value);

@@ -27,11 +27,11 @@ class _MovieGridItemState extends State<MovieGridItem>{
       builder: (context, snapshot) {
         return InkWell(
           onTap: (){
-            print("object");
+
             widget.presenter.fetchMovieDetails(widget.id);
             Navigator.push(context, PageRouteTransition(
                 animationType: AnimationType.slide_right,
-                builder: (context)=>MovieDetails(mainPresenter: widget.presenter,)));
+                builder: (context)=>MovieDetails(mainPresenter: widget.presenter,id: widget.id,)));
 
           },
           child: Container(

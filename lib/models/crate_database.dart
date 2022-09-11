@@ -57,6 +57,18 @@ class MyDatabase{
       );
     });
   }
+
+  Future<bool> checkFavorite(id) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM favorites Where id = $id');
+
+    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    return maps.isNotEmpty;
+  }
+
   Future<void> deleteFavorite(int id) async {
     // Get a reference to the database.
     final db = await database;
