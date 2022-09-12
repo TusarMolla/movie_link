@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 
 class MainPresenter{
   // initial variable
-  MyDatabase myDatabase;
+  MyDatabase myDatabase = MyDatabase();
 
   BehaviorSubject<int> _currentIndex = BehaviorSubject<int>.seeded(0);
   final _moviesFetcher = BehaviorSubject<MoviesResponse>();
@@ -29,7 +29,9 @@ class MainPresenter{
 
   MainPresenter(vnc){
     animationcontroller = AnimationController(vsync: vnc,duration: Duration(milliseconds: 1500));
-    myDatabase.create();
+    myDatabase.create().then((value){
+      fetchFavoriteMovies();
+    });
     animationcontroller.repeat();
     animation = Tween<double>(begin: 35, end: 50).animate(animationcontroller);
     animationcontroller.addListener(() {
@@ -41,7 +43,7 @@ class MainPresenter{
     fetchAllSlide();
     fetchTrandingMovie();
     fetchTvShows();
-    fetchFavoriteMovies();
+
   }
   
   Animation<double> animation; //animation variable for circle 1
@@ -92,18 +94,28 @@ class MainPresenter{
 
   fetchFavoriteMovies()async{
     var ids = await myDatabase.favorites();
-    List arrayId;
+    List arrayId=[];
     ids.forEach((element) {
       arrayId.add(element.id);
     });
-
-    var value = await MoviesRepository.favoriteMovieList(ids: arrayId);
-    _favoriteMovie.sink.add(value);
+if(arrayId.isNotEmpty) {
+  var value = await MoviesRepository.favoriteMovieList(ids: arrayId);
+  _favoriteMovie.sink.add(value);
+}
   }
     checkIsFavorite(id)async{
     var isFavorite = await myDatabase.checkFavorite(id);
     _isFavorite.sink.add(isFavorite);
   }
+     deleteFavorite(id)async{
+    var isFavorite = await myDatabase.deleteFavorite(id);
+    checkIsFavorite(id);
+  }
+  addFavorite(id)async{
+    var isFavorite = await myDatabase.insertFavorite(Favorite(id: int.parse(id)));
+    checkIsFavorite(id);
+  }
+
 
     fetchMovieDetails(id)async{
     var value = await MoviesRepository.movieDetails(id);

@@ -5,8 +5,12 @@ import 'package:sqflite/sqflite.dart';
 
 class MyDatabase{
   var database;
-  create()async{
-    database = openDatabase(
+  final tableName ="favorites";
+  MyDatabase(){
+    create();
+  }
+ Future<Database>create()async{
+    database = await openDatabase(
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
@@ -15,14 +19,14 @@ class MyDatabase{
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
-        'CREATE TABLE favorites(id INTEGER PRIMARY KEY)',
+        'CREATE TABLE $tableName(id INTEGER PRIMARY KEY)',
       );
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
     version: 1,
   );
-
+return database;
   }
 
 
@@ -36,7 +40,7 @@ class MyDatabase{
       //
       // In this case, replace any previous data.
       await db.insert(
-        'favorites',
+        '$tableName',
         favorite.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -48,7 +52,7 @@ class MyDatabase{
     final db = await database;
 
     // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('favorites');
+    final List<Map<String, dynamic>> maps = await database.rawQuery('SELECT * FROM $tableName');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
@@ -63,7 +67,7 @@ class MyDatabase{
     final db = await database;
 
     // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM favorites Where id = $id');
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM $tableName Where id = $id');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return maps.isNotEmpty;
@@ -75,7 +79,7 @@ class MyDatabase{
 
     // Remove the Dog from the database.
     await db.delete(
-      'favorites',
+      '$tableName',
       // Use a `where` clause to delete a specific dog.
       where: 'id = ?',
       // Pass the Dog's id as a whereArg to prevent SQL injection.

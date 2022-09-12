@@ -33,9 +33,10 @@ class MoviesRepository{
   }
   static Future<MoviesResponse> favoriteMovieList({var ids})async{
     Uri url = Uri.parse("${AppConfig.API_URL}/favorite");
-    var postBody= jsonDecode("{'ids':$ids}");
+    var postBody= jsonDecode('{"ids":$ids}');
     var header= {
-      "Content-Type":"application/json",
+      "Content-type": "application/json",
+      "Accept": "application/json"
     };
     var res = await http.post(url,body: postBody,headers: header);
     return moviesResponseFromJson(res.body);

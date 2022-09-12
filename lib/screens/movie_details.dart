@@ -117,9 +117,11 @@ class _MovieDetailsState extends State<MovieDetails> {
                                 return IconButton(
                                     onPressed: () {
                                       if(snapshot.data)
-                                        p
+                                        widget.mainPresenter.deleteFavorite(widget.id);
+                                      else
+                                        widget.mainPresenter.addFavorite(widget.id);
                                     },
-                                    icon: Icon(Icons.favorite));
+                                    icon: Icon(snapshot.data?Icons.favorite:Icons.favorite_border));
                                   else
                                     return Icon(Icons.favorite_border);
                                 ;
