@@ -24,14 +24,23 @@ class _MovieGridItemState extends State<MovieGridItem>{
   Widget build(BuildContext context) {
     return StreamBuilder<double>(
       stream: widget.presenter.getAnimationValue,
+      initialData: 35,
       builder: (context, snapshot) {
         return InkWell(
           onTap: (){
-
+              print("add click");
+              //_interstitialAd.show();
+              if (widget.presenter.isInterstitialAdReady) {
+                widget.presenter.interstitialAd.show();
+              }
             widget.presenter.fetchMovieDetails(widget.id);
             Navigator.push(context, PageRouteTransition(
                 animationType: AnimationType.slide_right,
-                builder: (context)=>MovieDetails(mainPresenter: widget.presenter,id: widget.id,)));
+                builder: (context)=>MovieDetails(mainPresenter: widget.presenter,id: widget.id,))
+            ).then((value) {
+              print("back");
+              widget.presenter.loadInterstitialAd();
+            });
 
           },
           child: Container(
@@ -42,7 +51,7 @@ class _MovieGridItemState extends State<MovieGridItem>{
                 fit: StackFit.passthrough,
                 children: [
                   FadeInImage(
-                    placeholder: AssetImage("assets/test.jpg"),
+                    placeholder: AssetImage("assets/place_holder.jpg"),
                     image: NetworkImage(widget.imageLink),
                     height: 200,
                     width: DeviceInfo(context).width / 2,
@@ -50,6 +59,8 @@ class _MovieGridItemState extends State<MovieGridItem>{
                   ),
                   Positioned(
                       bottom: 0,
+                      left: 0,
+                      right: 0,
                       child: Container(
                           height: 50,
                           width: DeviceInfo(context).width / 2,
@@ -61,9 +72,10 @@ class _MovieGridItemState extends State<MovieGridItem>{
                             widget.title ?? "",
                             style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white),
                             textAlign: TextAlign.center,
+                            maxLines: 2,
                           ))),
                   Center(
                       child: Container(

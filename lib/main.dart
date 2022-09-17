@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
 
       localizationsDelegates: [
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: Languages.getLocales(),
 
       theme: ThemeData(
-        fontFamily: "RobotoMono",
+        fontFamily: "DMSans",
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the

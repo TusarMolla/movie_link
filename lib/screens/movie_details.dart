@@ -24,145 +24,149 @@ class _MovieDetailsState extends State<MovieDetails> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: StreamBuilder<MovieDetailsResponse>(
-            stream: widget.mainPresenter.getMovieDetails,
+            stream: widget.mainPresenter.fetchMovieDetails(widget.id).asStream(),
             builder: (context, snapshot) {
               if (snapshot.hasData)
                 // if(false)
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        print(snapshot.data.data.link);
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          print(snapshot.data.data.link);
 
-                        if (await canLaunch(snapshot.data.data.link)) {
-                          await launch(snapshot.data.data.link);
-                        } else {
-                          print("false");
-                        }
-                      },
-                      child: Stack(
-                        alignment: Alignment.center,
-                        fit: StackFit.passthrough,
-                        children: [
-                          FadeInImage(
-                            placeholder: AssetImage("assets/test.jpg"),
-                            image: NetworkImage(snapshot.data.data.image),
-                            height: 200,
-                            width: DeviceInfo(context).width,
-                            fit: BoxFit.cover,
-                          ),
-                          StreamBuilder<double>(
-                              stream: widget.mainPresenter.getAnimationValue,
-                              builder: (context, snapshot) {
-                                return Center(
-                                    child: Container(
-                                  alignment: Alignment.center,
-                                  transformAlignment: Alignment.center,
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 6,
-                                        offset: Offset(1, 5),
-                                        spreadRadius: 2,
-                                      ),
-                                    ],
-                                    color: MyTheme.ambr,
-                                  ),
-                                  child: Icon(
-                                    Icons.play_arrow,
-                                    size: 35,
-                                    color: MyTheme.white,
-                                  ),
-                                ));
-                              }),
-                        ],
+                          if (await canLaunch(snapshot.data.data.link)) {
+                            await launch(snapshot.data.data.link);
+                          } else {
+                            print("false");
+                          }
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          fit: StackFit.passthrough,
+                          children: [
+                            FadeInImage(
+                              placeholder: AssetImage("assets/place_holder.jpg"),
+                              image: NetworkImage(snapshot.data.data.image),
+                              height: 200,
+                              width: DeviceInfo(context).width,
+                              fit: BoxFit.contain,
+                            ),
+                            StreamBuilder<double>(
+                                stream: widget.mainPresenter.getAnimationValue,
+                                builder: (context, snapshot) {
+                                  return Center(
+                                      child: Container(
+                                    alignment: Alignment.center,
+                                    transformAlignment: Alignment.center,
+                                    height: 45,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 6,
+                                          offset: Offset(1, 5),
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
+                                      color: MyTheme.ambr,
+                                    ),
+                                    child: Icon(
+                                      Icons.play_arrow,
+                                      size: 35,
+                                      color: MyTheme.white,
+                                    ),
+                                  ));
+                                }),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 18.0, right: 18, top: 10),
-                      child: Text(
-                        snapshot.data.data.name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 18.0, right: 18, top: 10),
+                        child: Text(
+                          snapshot.data.data.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18.0, right: 18),
-                      child: Row(
-                        children: [
-                          Text(
-                            snapshot.data.data.rating,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          Icon(
-                            Icons.star_rate_rounded,
-                            color: MyTheme.ambr,
-                          ),
-                          StreamBuilder<bool>(
-                              stream: widget.mainPresenter.getIsFavorite,
-                              builder: (context, snapshot) {
-                                if(snapshot.hasData)
-                                return IconButton(
-                                    onPressed: () {
-                                      if(snapshot.data)
-                                        widget.mainPresenter.deleteFavorite(widget.id);
-                                      else
-                                        widget.mainPresenter.addFavorite(widget.id);
-                                    },
-                                    icon: Icon(snapshot.data?Icons.favorite:Icons.favorite_border));
-                                  else
-                                    return Icon(Icons.favorite_border);
-                                ;
-                              })
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18.0, right: 18),
+                        child: Row(
+                          children: [
+                            Text(
+                              snapshot.data.data.rating,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            Icon(
+                              Icons.star_rate_rounded,
+                              color: MyTheme.ambr,
+                            ),
+                            StreamBuilder<bool>(
+                                stream: widget.mainPresenter.getIsFavorite,
+                                builder: (context, snapshot) {
+                                  if(snapshot.hasData)
+                                  return IconButton(
+                                    splashRadius: 2,
+                                      onPressed: () {
+                                        if(snapshot.data)
+                                          widget.mainPresenter.deleteFavorite(widget.id);
+                                        else
+                                          widget.mainPresenter.addFavorite(widget.id);
+                                      },
+                                      icon: Icon(snapshot.data?Icons.favorite:Icons.favorite_border,color: Colors.red.shade800,));
+                                    else
+                                      return Icon(Icons.favorite_border);
+                                  ;
+                                })
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18.0, right: 18),
-                      child: Text(
-                        snapshot.data.data.category,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 16),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18.0, right: 18),
+                        child: Text(
+                          snapshot.data.data.category,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w100, fontSize: 16),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18.0, right: 18),
-                      child: Text(
-                        "Duration: " + snapshot.data.data.duration + " hours",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 16),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18.0, right: 18),
+                        child: Text(
+                          "Duration: " + snapshot.data.data.duration + " hours",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 16),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18.0, right: 18),
-                      child: Text(
-                        "Releases: " + snapshot.data.data.releaseDate,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 16),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18.0, right: 18),
+                        child: Text(
+                          "Releases: " + snapshot.data.data.releaseDate,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 16),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 18.0, right: 18, top: 10),
-                      child: Text(
-                        snapshot.data.data.description,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 16),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 18.0, right: 18, top: 10),
+                        child: Text(
+                          snapshot.data.data.description,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 16),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               else
                 return Column(

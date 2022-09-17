@@ -24,6 +24,13 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    mainPresenter.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<int>(
       initialData: 0,
@@ -43,6 +50,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
        onTap: (index) {
          mainPresenter.add(index);
        },
+       backgroundColor: Colors.black.withOpacity(0.5),
        currentIndex: snapshot.data,
        items: [
          BottomNavigationBarItem(
@@ -53,11 +61,16 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
          BottomNavigationBarItem(
            icon: Icon(Icons.whatshot_outlined),
            label: "Tranding",
+           backgroundColor: Colors.black.withOpacity(0.5),
          ),
          BottomNavigationBarItem(
-             icon: Icon(Icons.live_tv_rounded), label: "TV"),
+             icon: Icon(Icons.live_tv_rounded), label: "TV",
+           backgroundColor: Colors.black.withOpacity(0.5),
+         ),
          BottomNavigationBarItem(
-             icon: Icon(Icons.favorite), label: "Favorite"),
+             icon: Icon(Icons.favorite), label: "Favorite",
+           backgroundColor: Colors.black.withOpacity(0.5),
+         ),
        ],
      );
   }
@@ -76,7 +89,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
           return TV(presenter: mainPresenter,);
           break;
         case 3:
-          //return Favorite();
+          return Favorite(presenter: mainPresenter,);
           break;
         default:
           return Home(presenter: mainPresenter);

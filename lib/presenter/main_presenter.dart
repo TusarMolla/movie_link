@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:movie_link/models/category.dart';
 import 'package:movie_link/models/crate_database.dart';
 import 'package:movie_link/models/favorite_sqlite_model.dart';
 import 'package:movie_link/models/movie.dart';
 import 'package:movie_link/models/movie_details.dart';
 import 'package:movie_link/models/sliders.dart';
+import 'package:movie_link/others/ad_helper.dart';
 import 'package:movie_link/repositories/categories_repository.dart';
 import 'package:movie_link/repositories/movies_repository.dart';
 import 'package:movie_link/repositories/sliders_repository.dart';
@@ -12,22 +16,33 @@ import 'package:rxdart/rxdart.dart';
 
 class MainPresenter{
   // initial variable
+  InterstitialAd interstitialAd;
+  // TODO: Add _isInterstitialAdReady
+  bool isInterstitialAdReady = false;
   MyDatabase myDatabase = MyDatabase();
+  int homePage=1,trandingPage=1,tvPage=1;
+
+  ScrollController mainScrollController = ScrollController();
+  
 
   BehaviorSubject<int> _currentIndex = BehaviorSubject<int>.seeded(0);
-  final _moviesFetcher = BehaviorSubject<MoviesResponse>();
-  final _trandingMoviesFetcher = BehaviorSubject<MoviesResponse>();
-  final _tvShowsFetcher = BehaviorSubject<MoviesResponse>();
-  final _filteredFetcher = BehaviorSubject<MoviesResponse>();
-  final _slideFetcher = BehaviorSubject<SlidersResponse>();
-  final _categoryFetcher = BehaviorSubject<CategoriesResponse>();
-  final _movieDetailsFetcher = BehaviorSubject<MovieDetailsResponse>();
-  final _animationValue = BehaviorSubject<double>.seeded(35);
+ var _moviesFetcher = BehaviorSubject<List<MovieData>>();
+  var _trandingMoviesFetcher = BehaviorSubject<MoviesResponse>();
+  var _tvShowsFetcher = BehaviorSubject<MoviesResponse>();
+  var _filteredFetcher = BehaviorSubject<MoviesResponse>();
+  var _slideFetcher = BehaviorSubject<SlidersResponse>();
+  var _categoryFetcher = BehaviorSubject<CategoriesResponse>();
+  var _movieDetailsFetcher = BehaviorSubject<MovieDetailsResponse>();
+  var _animationValue = BehaviorSubject<double>.seeded(35);
 
   final _isFavorite = BehaviorSubject<bool>.seeded(false);
   final _favoriteMovie = BehaviorSubject<MoviesResponse>();
 
   MainPresenter(vnc){
+    // serve adds
+    _initGoogleMobileAds();
+    loadInterstitialAd();
+
     animationcontroller = AnimationController(vsync: vnc,duration: Duration(milliseconds: 1500));
     myDatabase.create().then((value){
       fetchFavoriteMovies();
@@ -39,13 +54,49 @@ class MainPresenter{
     });
 
     fetchAllCategory();
-    fetchAllMovie();
+    fetchAllMovie(1);
     fetchAllSlide();
-    fetchTrandingMovie();
-    fetchTvShows();
+    fetchTrandingMovie(1);
+    fetchTvShows(1);
+
+    mainScrollController.addListener(() {
+      if(mainScrollController.offset== mainScrollController.position.maxScrollExtent){
+        homePage++;
+        fetchAllMovie(homePage);;
+      }
+    });
 
   }
-  
+
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    // TODO: Initialize Google Mobile Ads SDK
+    return MobileAds.instance.initialize();
+  }
+
+  // TODO: Implement _loadInterstitialAd()
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          this.interstitialAd = ad;
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              //_moveToHome();
+            },
+          );
+          isInterstitialAdReady = true;
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load an interstitial ad: ${err.message}');
+          print('Failed to load an responseInfo ad: ${err.responseInfo}');
+          isInterstitialAdReady = false;
+        },
+      ),
+    );
+  }
+
   Animation<double> animation; //animation variable for circle 1
   // var  animation2 = Tween<double>(begin: 35, end: 50).transform(t); //animation variable for circle 1
   AnimationController animationcontroller; //animation controller variable circle 1
@@ -61,30 +112,47 @@ class MainPresenter{
   
   // get data
   BehaviorSubject<int> get getIndex => _currentIndex.stream;
-  BehaviorSubject <MoviesResponse> get allMovie=>_moviesFetcher.stream;
+  BehaviorSubject <List<MovieData>> get allMovie=>_moviesFetcher.stream;
   BehaviorSubject <MoviesResponse> get trandingMovies=>_trandingMoviesFetcher.stream;
   BehaviorSubject <MoviesResponse> get tvShows=>_tvShowsFetcher.stream;
   BehaviorSubject <MoviesResponse> get getFilteredMovies=>_filteredFetcher.stream;
   BehaviorSubject <SlidersResponse> get allSlide=>_slideFetcher.stream;
   BehaviorSubject <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
   BehaviorSubject<double> get getAnimationValue => _animationValue.stream;
-  BehaviorSubject<MovieDetailsResponse> get getMovieDetails => _movieDetailsFetcher.stream;
+  //BehaviorSubject<MovieDetailsResponse> get getMovieDetails => _movieDetailsFetcher.stream;
+
   BehaviorSubject<MoviesResponse> get getFavoriteMovie => _favoriteMovie.stream;
   BehaviorSubject<bool> get getIsFavorite => _isFavorite.stream;
 
-  fetchAllMovie()async{
-    var value = await MoviesRepository.movieList(page: 1);
-    _moviesFetcher.sink.add(value);
+  fetchAllMovie(page)async{
+    print("bbb");
+    var temp =<MovieData> [];
+    if(page>1){
+      temp.addAll(_moviesFetcher.stream.value);
+    }
+    print("bbb after ${temp.length}");
+
+    var value = await MoviesRepository.movieList(page: page);
+    print(value.data.length.toString() + "bbb");
+   // var temp = BehaviorSubject<List<MovieData>>();
+   //temp.add(value.data);
+
+    temp.addAll(value.data);
+
+ _moviesFetcher.sink.add(temp);
   }
 
-  fetchTrandingMovie()async{
-    var value = await MoviesRepository.trandingMovieList(page: 1);
+ Future<bool> fetchTrandingMovie(page)async{
+    var value = await MoviesRepository.trandingMovieList(page: page);
     _trandingMoviesFetcher.sink.add(value);
+
+    return true;
   }
 
-  fetchTvShows()async{
-    var value = await MoviesRepository.tvShowList(page: 1);
+Future<bool> fetchTvShows(int page)async{
+    var value = await MoviesRepository.tvShowList(page: page);
     _tvShowsFetcher.sink.add(value);
+    return true;
   }
 
   fetchFilters(id)async{
@@ -98,28 +166,52 @@ class MainPresenter{
     ids.forEach((element) {
       arrayId.add(element.id);
     });
-if(arrayId.isNotEmpty) {
-  var value = await MoviesRepository.favoriteMovieList(ids: arrayId);
-  _favoriteMovie.sink.add(value);
-}
+    if (arrayId.isNotEmpty) {
+      var value = await MoviesRepository.favoriteMovieList(ids: arrayId);
+      _favoriteMovie.sink.add(value);
+    }
   }
     checkIsFavorite(id)async{
     var isFavorite = await myDatabase.checkFavorite(id);
     _isFavorite.sink.add(isFavorite);
   }
      deleteFavorite(id)async{
-    var isFavorite = await myDatabase.deleteFavorite(id);
+    var isFavorite = await myDatabase.deleteFavorite(int.parse(id.toString()));
     checkIsFavorite(id);
-  }
+    fetchFavoriteMovies();
+
+     }
   addFavorite(id)async{
     var isFavorite = await myDatabase.insertFavorite(Favorite(id: int.parse(id)));
     checkIsFavorite(id);
+    fetchFavoriteMovies();
+  }
+
+  Future<bool> homeReset()async{
+    fetchAllCategory();
+    fetchAllMovie(1);
+    fetchAllSlide();
+    return true;
+  }
+
+  Future<bool> trandingReset()async{
+  await  fetchTrandingMovie(1);
+
+    return true;
+  }
+
+  Future<bool> tvReset()async{
+  await  fetchTvShows(1);
+
+    return true;
   }
 
 
-    fetchMovieDetails(id)async{
+
+
+  Future<MovieDetailsResponse>  fetchMovieDetails(id)async{
     var value = await MoviesRepository.movieDetails(id);
-    _movieDetailsFetcher.sink.add(value);
+    return value;
   }
 
 
@@ -142,6 +234,20 @@ if(arrayId.isNotEmpty) {
 
 disposeAnimation(){
     animationcontroller.dispose();
+}
+
+dispose(){
+  _currentIndex.close();
+  _moviesFetcher.close();
+  _trandingMoviesFetcher.close();
+  _tvShowsFetcher.close();
+  _filteredFetcher.close();
+  _slideFetcher.close();
+   _categoryFetcher.close();
+   _movieDetailsFetcher.close();
+   _animationValue.close();
+   _isFavorite.close();
+   _favoriteMovie.close();
 }
 
 }

@@ -43,7 +43,7 @@ class CategoryItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: MyTheme.accent_soft_color,
                 ),
-                child: Text(text??"",style: TextStyle(fontSize: 15,color: Colors.white,),textAlign:TextAlign.center ,))
+                child: Text(text??"",style: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold),textAlign:TextAlign.center ,maxLines: 1,))
           ],
         ),
       ),

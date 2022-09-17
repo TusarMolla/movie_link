@@ -24,9 +24,12 @@ class Home extends StatelessWidget {
       appBar: buildAppBar(context),
       body: RefreshIndicator(
         onRefresh: () {
-          return Future.delayed(Duration(seconds: 2));
+          presenter.homeReset();
+          return Future.delayed(Duration(seconds: 1));
         },
         child: CustomScrollView(
+          controller: presenter.mainScrollController,
+          physics: AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: buildBodyContainer(context),
@@ -41,7 +44,7 @@ class Home extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 10,
+          height: 5,
         ),
         buildImageSliderContainer(context),
         buildCategoryContainer(),
@@ -50,9 +53,10 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildTopMovieContainer() => StreamBuilder<MoviesResponse>(
+  Widget buildTopMovieContainer() => StreamBuilder<List<MovieData>>(
       stream: presenter.allMovie,
       builder: (context, snapshot) {
+        print(snapshot.hasData);
         return Container(
           margin: EdgeInsets.only(top: 16),
           width: DeviceInfo(context).width,
@@ -85,14 +89,14 @@ class Home extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   crossAxisCount: 2,
                   children: List.generate(
-                      snapshot.data.data.length,
+                      snapshot.data.length,
                       (index) => MovieGridItem(
-                            title: snapshot.data.data[index].name,
-                            imageLink: snapshot.data.data[index].image,
-                            ratting: snapshot.data.data[index].rating,
-                            category: snapshot.data.data[index].category,
+                            title: snapshot.data[index].name,
+                            imageLink: snapshot.data[index].image,
+                            ratting: snapshot.data[index].rating,
+                            category: snapshot.data[index].category,
                             presenter: presenter,
-                            id:snapshot.data.data[index].id.toString() ,
+                            id:snapshot.data[index].id.toString() ,
                             index: index,
                           )),
                 ),

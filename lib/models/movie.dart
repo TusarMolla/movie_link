@@ -15,12 +15,12 @@ class MoviesResponse {
     this.meta,
   });
 
-  List<Datum> data;
+  List<MovieData> data;
   Links links;
   Meta meta;
 
   factory MoviesResponse.fromJson(Map<String, dynamic> json) => MoviesResponse(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<MovieData>.from(json["data"].map((x) => MovieData.fromJson(x))),
     links: Links.fromJson(json["links"]),
     meta: Meta.fromJson(json["meta"]),
   );
@@ -32,8 +32,8 @@ class MoviesResponse {
   };
 }
 
-class Datum {
-  Datum({
+class MovieData {
+  MovieData({
     this.id,
     this.name,
     this.category,
@@ -57,7 +57,7 @@ class Datum {
   String releaseDate;
   String tranding;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory MovieData.fromJson(Map<String, dynamic> json) => MovieData(
     id: json["id"],
     name: json["name"],
     category: json["category"],
