@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyTheme{
-  static Color accent_color= Color.fromRGBO(0, 3, 45, 1.0);
-  static Color accent_soft_color= Color.fromRGBO(0, 3,45, 0.4);
+  static Color accent_color= Color.fromRGBO(11, 9, 28, 1.0);
+  static Color accent_soft_color= Color.fromRGBO(0, 0,0, 0.4);
 
 
   static Color accent_black= Color.fromRGBO(0, 0,0, 1);

@@ -10,14 +10,14 @@ class CommonUi{
     return  BoxDecoration(
       color: color,
     borderRadius: BorderRadius.circular(radius),
-    boxShadow: [
-    BoxShadow(
-    color: Colors.grey.withOpacity(0.6),
-    blurRadius: blurRadius,
-    offset: Offset(offsetX,offsetY),
-    spreadRadius: spreadRadius,
-    )
-    ],
+    // boxShadow: [
+    // BoxShadow(
+    // color: Colors.grey.withOpacity(0.6),
+    // blurRadius: blurRadius,
+    // offset: Offset(offsetX,offsetY),
+    // spreadRadius: spreadRadius,
+    // )
+    // ],
 
     );
 }

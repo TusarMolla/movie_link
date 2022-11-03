@@ -7,6 +7,7 @@ import 'package:movie_link/custom/shimmer_helper.dart';
 import 'package:movie_link/models/category.dart';
 import 'package:movie_link/models/movie.dart';
 import 'package:movie_link/models/sliders.dart';
+import 'package:movie_link/my_theme.dart';
 import 'package:movie_link/presenter/main_presenter.dart';
 
 import 'package:movie_link/ui_elements/category_item.dart';
@@ -20,7 +21,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.08),
+      backgroundColor: MyTheme.accent_color,
       appBar: buildAppBar(context),
       body: RefreshIndicator(
         onRefresh: () {
@@ -238,7 +239,7 @@ class Home extends StatelessWidget {
                           Positioned(
                             bottom: 0,
                             child: Container(
-                              height: 120,
+                              height: 80,
                               width: DeviceInfo(context).width,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
@@ -252,9 +253,8 @@ class Home extends StatelessWidget {
                                         // Colors.white60.withOpacity(0.5),
                                         // Colors.white70.withOpacity(0.5),
                                         //Colors.white.withOpacity(0.5),
-                                        Colors.grey.withOpacity(0.5),
-                                        Colors.black12.withOpacity(0.5),
-                                        Colors.black38.withOpacity(0.5),
+                                        MyTheme.accent_black.withOpacity(0.0),
+                                        MyTheme.accent_black,
                                         // Colors.black45.withOpacity(0.5),
                                         // Colors.black54.withOpacity(0.5),
                                         // Colors.black.withOpacity(0.5),

@@ -28,7 +28,7 @@ class _MovieGridItemState extends State<MovieGridItem>{
       builder: (context, snapshot) {
         return InkWell(
           onTap: (){
-              print("add click");
+              //print("add click");
               //_interstitialAd.show();
               if (widget.presenter.isInterstitialAdReady) {
                 widget.presenter.interstitialAd.show();
@@ -47,37 +47,33 @@ class _MovieGridItemState extends State<MovieGridItem>{
             decoration: CommonUi.shdowDecoration(spreadRadius: 0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Stack(
-                fit: StackFit.passthrough,
+              child: Column(
+               // fit: StackFit.passthrough,
                 children: [
                   FadeInImage(
                     placeholder: AssetImage("assets/place_holder.jpg"),
                     image: NetworkImage(widget.imageLink),
-                    height: 200,
+                    height: 150,
                     width: DeviceInfo(context).width / 2,
                     fit: BoxFit.cover,
                   ),
-                  Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                          height: 50,
-                          width: DeviceInfo(context).width / 2,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: MyTheme.accent_soft_color,
-                          ),
-                          child: Text(
-                            widget.title ?? "",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                          ))),
-                  Center(
+                  Container(
+                      height: 50,
+                      width: DeviceInfo(context).width / 2,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: MyTheme.accent_soft_color,
+                      ),
+                      child: Text(
+                        widget.title ?? "",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                      )),
+                  /*Center(
                       child: Container(
                         alignment: Alignment.center,
                         transformAlignment: Alignment.center,
@@ -100,7 +96,7 @@ class _MovieGridItemState extends State<MovieGridItem>{
                           size: 35,
                           color: MyTheme.white,
                         ),
-                      )),
+                      )),*/
                 ],
               ),
             ),
