@@ -59,54 +59,36 @@ class Home extends StatelessWidget {
       builder: (context, snapshot) {
         print(snapshot.hasData);
         return Container(
+
           margin: EdgeInsets.only(top: 16),
           width: DeviceInfo(context).width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  "Top Movies",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              if(snapshot.hasData)
-              Container(
-                alignment: Alignment.center,
-                child: GridView.count(
-                  padding: EdgeInsets.only(right: 16, left: 16, bottom: 60),
-                  physics: NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 0.8,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  crossAxisCount: 2,
-                  children: List.generate(
-                      snapshot.data.length,
-                      (index) => MovieGridItem(
-                            title: snapshot.data[index].name,
-                            imageLink: snapshot.data[index].image,
-                            ratting: snapshot.data[index].rating,
-                            category: snapshot.data[index].category,
-                            presenter: presenter,
-                            id:snapshot.data[index].id.toString() ,
-                            index: index,
-                          )),
-                ),
-              )
-              else
-                buildTopMovieShimmer(context),
-
-            ],
-          ),
+          child: snapshot.hasData?
+          Container(
+            alignment: Alignment.center,
+            child: GridView.count(
+              padding: EdgeInsets.only(right: 16, left: 16, bottom: 60),
+              physics: NeverScrollableScrollPhysics(),
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 0.8,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              crossAxisCount: 2,
+              children: List.generate(
+                  snapshot.data.length,
+                  (index) => MovieGridItem(
+                        title: snapshot.data[index].name,
+                        imageLink: snapshot.data[index].image,
+                        ratting: snapshot.data[index].rating,
+                        category: snapshot.data[index].category,
+                        presenter: presenter,
+                        id:snapshot.data[index].id.toString() ,
+                        index: index,
+                      )),
+            ),
+          )
+          :
+            buildTopMovieShimmer(context),
         );
       });
 
@@ -135,33 +117,16 @@ class Home extends StatelessWidget {
       stream: presenter.allCategory,
       builder: (context, snapshot) {
         return Container(
-          height: 120,
+
+          height: 80,
           margin: EdgeInsets.only(top: 16),
           width: DeviceInfo(context).width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  "Category",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 80,
-                child: snapshot.hasData
-                    // false
-                    ? buildCategoryList(snapshot)
-                    : buildCategoryShimmerList(),
-              ),
-            ],
+          child: SizedBox(
+            height: 80,
+            child: snapshot.hasData
+                // false
+                ? buildCategoryList(snapshot)
+                : buildCategoryShimmerList(),
           ),
         );
       });

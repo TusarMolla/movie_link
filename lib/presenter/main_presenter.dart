@@ -38,20 +38,16 @@ class MainPresenter{
   final _isFavorite = BehaviorSubject<bool>.seeded(false);
   final _favoriteMovie = BehaviorSubject<MoviesResponse>();
 
-  MainPresenter(vnc){
+  MainPresenter(){
     // serve adds
     _initGoogleMobileAds();
     loadInterstitialAd();
 
-    animationcontroller = AnimationController(vsync: vnc,duration: Duration(milliseconds: 1500));
+
     myDatabase.create().then((value){
       fetchFavoriteMovies();
     });
-    animationcontroller.repeat();
-    animation = Tween<double>(begin: 35, end: 50).animate(animationcontroller);
-    animationcontroller.addListener(() {
-      _animationValue.sink.add(animation.value);
-    });
+
 
     fetchAllCategory();
     fetchAllMovie(1);
@@ -111,18 +107,18 @@ class MainPresenter{
   
   
   // get data
-  BehaviorSubject<int> get getIndex => _currentIndex.stream;
-  BehaviorSubject <List<MovieData>> get allMovie=>_moviesFetcher.stream;
-  BehaviorSubject <MoviesResponse> get trandingMovies=>_trandingMoviesFetcher.stream;
-  BehaviorSubject <MoviesResponse> get tvShows=>_tvShowsFetcher.stream;
-  BehaviorSubject <MoviesResponse> get getFilteredMovies=>_filteredFetcher.stream;
-  BehaviorSubject <SlidersResponse> get allSlide=>_slideFetcher.stream;
-  BehaviorSubject <CategoriesResponse> get allCategory=>_categoryFetcher.stream;
-  BehaviorSubject<double> get getAnimationValue => _animationValue.stream;
+  BehaviorSubject<int> get getIndex => _currentIndex;
+  BehaviorSubject <List<MovieData>> get allMovie=>_moviesFetcher;
+  BehaviorSubject <MoviesResponse> get trandingMovies=>_trandingMoviesFetcher;
+  BehaviorSubject <MoviesResponse> get tvShows=>_tvShowsFetcher;
+  BehaviorSubject <MoviesResponse> get getFilteredMovies=>_filteredFetcher;
+  BehaviorSubject <SlidersResponse> get allSlide=>_slideFetcher;
+  BehaviorSubject <CategoriesResponse> get allCategory=>_categoryFetcher;
+  BehaviorSubject<double> get getAnimationValue => _animationValue;
   //BehaviorSubject<MovieDetailsResponse> get getMovieDetails => _movieDetailsFetcher.stream;
 
-  BehaviorSubject<MoviesResponse> get getFavoriteMovie => _favoriteMovie.stream;
-  BehaviorSubject<bool> get getIsFavorite => _isFavorite.stream;
+  BehaviorSubject<MoviesResponse> get getFavoriteMovie => _favoriteMovie;
+  BehaviorSubject<bool> get getIsFavorite => _isFavorite;
 
   fetchAllMovie(page)async{
     print("bbb");
@@ -206,10 +202,21 @@ Future<bool> fetchTvShows(int page)async{
     return true;
   }
 
+  setAnimation(vnc){
+    animationcontroller = AnimationController(vsync: vnc,duration: Duration(milliseconds: 2500));
+    animationcontroller.repeat();
+    animation = Tween<double>(begin: 45, end: 60).animate(animationcontroller);
+    animationcontroller.addListener(() {
+      _animationValue.sink.add(animation.value);
+    });
+  }
+
+
+  Future<MovieDetailsResponse>  fetchMovieDetails(id,)async{
 
 
 
-  Future<MovieDetailsResponse>  fetchMovieDetails(id)async{
+
     var value = await MoviesRepository.movieDetails(id);
     return value;
   }

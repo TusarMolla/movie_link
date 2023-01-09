@@ -21,9 +21,7 @@ class CategoryItem extends StatelessWidget {
       child: InkWell(
         onTap: (){
           presenter.fetchFilters(id);
-          Navigator.push(context, PageRouteTransition(builder: (context)=>FilteredMovies(presenter: presenter,title: text,),
-            animationType: AnimationType.slide_right
-          ));
+           slideRightWidget(newPage:FilteredMovies(presenter: presenter,title: text,));
         },
         child: Stack(
           children: [

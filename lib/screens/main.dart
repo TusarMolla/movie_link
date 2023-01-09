@@ -12,12 +12,12 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin{
+class _MainPageState extends State<MainPage>{
   MainPresenter mainPresenter;
 
   @override
   void initState() {
-    mainPresenter= MainPresenter(this);
+    mainPresenter= MainPresenter();
     // TODO: implement initState
    //mainPresenter= Provider.of<MainPresenter>(context, listen: false);
     super.initState();

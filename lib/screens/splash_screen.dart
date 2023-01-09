@@ -23,9 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(Duration(seconds: 2)).then((value){
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>
-         MainPage(),
-      ), (route) => false);
+      pushWidgetWhileRemove(newPage: MainPage(), context: context);
+      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>
+      //    MainPage(),
+      // ), (route) => false);
     });
     // TODO: implement initState
     super.initState();

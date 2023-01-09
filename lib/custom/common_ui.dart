@@ -41,5 +41,18 @@ class CommonUi{
         
 
   }
-
+static decorations(){
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(8.0),
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(.08),
+          blurRadius: 20,
+          spreadRadius: 0.0,
+          offset: Offset(0.0, 10.0), // shadow direction: bottom right
+        )
+      ],
+    );
+}
 }

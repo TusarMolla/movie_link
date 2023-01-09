@@ -22,58 +22,47 @@ class _MovieGridItemState extends State<MovieGridItem>{
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<double>(
-      stream: widget.presenter.getAnimationValue,
-      initialData: 35,
-      builder: (context, snapshot) {
-        return InkWell(
-          onTap: (){
-              //print("add click");
-              //_interstitialAd.show();
-              if (widget.presenter.isInterstitialAdReady) {
-                widget.presenter.interstitialAd.show();
-              }
-            widget.presenter.fetchMovieDetails(widget.id);
-            Navigator.push(context, PageRouteTransition(
-                animationType: AnimationType.slide_right,
-                builder: (context)=>MovieDetails(mainPresenter: widget.presenter,id: widget.id,))
-            ).then((value) {
-              print("back");
-              widget.presenter.loadInterstitialAd();
-            });
-
-          },
-          child: Container(
-            decoration: CommonUi.shdowDecoration(spreadRadius: 0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Column(
-               // fit: StackFit.passthrough,
-                children: [
-                  FadeInImage(
-                    placeholder: AssetImage("assets/place_holder.jpg"),
-                    image: NetworkImage(widget.imageLink),
-                    height: 150,
-                    width: DeviceInfo(context).width / 2,
-                    fit: BoxFit.cover,
+    return InkWell(
+      onTap: (){
+        //print("add click");
+        //_interstitialAd.show();
+        if (widget.presenter.isInterstitialAdReady) {
+          widget.presenter.interstitialAd.show();
+        }
+        widget.presenter.fetchMovieDetails(widget.id);
+        slideRightWidget(newPage: MovieDetails(mainPresenter: widget.presenter,id: widget.id,), context: context);
+      },
+      child: Container(
+        decoration: CommonUi.shdowDecoration(spreadRadius: 0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Column(
+            // fit: StackFit.passthrough,
+            children: [
+              FadeInImage(
+                placeholder: AssetImage("assets/place_holder.jpg"),
+                image: NetworkImage(widget.imageLink),
+                height: 150,
+                width: DeviceInfo(context).width / 2,
+                fit: BoxFit.cover,
+              ),
+              Container(
+                  height: 50,
+                  width: DeviceInfo(context).width / 2,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: MyTheme.accent_soft_color,
                   ),
-                  Container(
-                      height: 50,
-                      width: DeviceInfo(context).width / 2,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: MyTheme.accent_soft_color,
-                      ),
-                      child: Text(
-                        widget.title ?? "",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                      )),
-                  /*Center(
+                  child: Text(
+                    widget.title ?? "",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                  )),
+              /*Center(
                       child: Container(
                         alignment: Alignment.center,
                         transformAlignment: Alignment.center,
@@ -97,12 +86,10 @@ class _MovieGridItemState extends State<MovieGridItem>{
                           color: MyTheme.white,
                         ),
                       )),*/
-                ],
-              ),
-            ),
+            ],
           ),
-        );
-      }
+        ),
+      ),
     );
   }
 }
