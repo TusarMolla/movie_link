@@ -22,7 +22,7 @@ class _TrandingState extends State<Tranding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(LangText(context).getLang().tranding_page_title),),
+     // appBar: AppBar(title: Text(LangText(context).getLang().tranding_page_title),),
       body:  RefreshIndicator(
         onRefresh: (){
           return Future.delayed(Duration(seconds: 2));

@@ -21,7 +21,7 @@ class _TVState extends State<TV> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(LangText(context).getLang().tv_page_title),),
+     // appBar: AppBar(title: Text(LangText(context).getLang().tv_page_title),),
       body: buildBodyContainer(context),
     );
   }

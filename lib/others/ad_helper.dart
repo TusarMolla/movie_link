@@ -4,7 +4,16 @@ class AdHelper {
 
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
+      return 'ca-app-pub-5562558287101607/8169816241';
+    } else if (Platform.isIOS) {
       return '';
+    } else {
+      throw new UnsupportedError('Unsupported platform');
+    }
+  }
+  static String get nativeAdUnitId {
+    if (Platform.isAndroid) {
+      return 'ca-app-pub-5562558287101607/7086204409';
     } else if (Platform.isIOS) {
       return '';
     } else {

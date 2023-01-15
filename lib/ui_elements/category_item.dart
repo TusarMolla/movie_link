@@ -19,9 +19,9 @@ class CategoryItem extends StatelessWidget {
       height: 80,
       width: 80,
       child: InkWell(
-        onTap: (){
+        onTap: ()async{
           presenter.fetchFilters(id);
-           slideRightWidget(newPage:FilteredMovies(presenter: presenter,title: text,));
+           slideRightWidget(newPage:FilteredMovies(presenter: presenter,title: text),context: context);
         },
         child: Stack(
           children: [
