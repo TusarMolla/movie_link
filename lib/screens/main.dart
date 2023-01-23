@@ -131,7 +131,6 @@ class _MainPageState extends State<MainPage>{
       bottom: PreferredSize(
         child: _anchoredAdaptiveAd != null && _isLoaded?
       Container(
-      color: Colors.green,
       width: _anchoredAdaptiveAd.size.width.toDouble(),
       height: _anchoredAdaptiveAd.size.height.toDouble(),
       child: AdWidget(ad: _anchoredAdaptiveAd),

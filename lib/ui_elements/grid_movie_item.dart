@@ -30,7 +30,9 @@ class _MovieGridItemState extends State<MovieGridItem>{
           widget.presenter.interstitialAd.show();
         }
         widget.presenter.fetchMovieDetails(widget.id);
-        slideRightWidget(newPage: MovieDetails(mainPresenter: widget.presenter,id: widget.id,), context: context);
+        slideRightWidget(newPage: MovieDetails(mainPresenter: widget.presenter,id: widget.id,), context: context).then((value) {
+          widget.presenter.loadInterstitialAd();
+        });
       },
       child: Container(
         decoration: CommonUi.shdowDecoration(spreadRadius: 0),

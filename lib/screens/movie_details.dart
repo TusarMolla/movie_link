@@ -29,6 +29,8 @@ class _MovieDetailsState extends State<MovieDetails>
 
   bool appIsloaded = false;
 
+
+
   @override
   void initState() {
     listener = NativeAdListener(
@@ -66,6 +68,13 @@ class _MovieDetailsState extends State<MovieDetails>
 
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    widget.mainPresenter.animationcontroller.dispose();
+    super.dispose();
   }
 
   @override
